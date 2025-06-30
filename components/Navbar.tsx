@@ -1,42 +1,80 @@
+/**
+ * Navigation Bar Component
+ *
+ * This component provides the main navigation interface for the LLM chat application.
+ * It displays the application logo, navigation links, and authentication controls
+ * based on the user's login status.
+ *
+ * Features:
+ * - Responsive navigation bar with logo and menu items
+ * - Dynamic authentication state display
+ * - Sign in/out functionality with GitHub OAuth
+ * - Navigation links to chats for authenticated users
+ * - Clean, modern design with hover effects
+ *
+ * Authentication States:
+ * - Unauthenticated: Shows sign-in button with GitHub icon
+ * - Authenticated: Shows "Chats" link and sign-out button
+ *
+ * Usage:
+ * - Included in the root layout for global navigation
+ * - Receives session data from NextAuth
+ * - Handles authentication actions via auth-actions
+ */
+
 "use client"
 
 import Link from "next/link"
 import React from "react"
 import { login, logout } from "../lib/auth-actions"
 import { Session } from "next-auth"
-import { FiSidebar } from "react-icons/fi"
 
-const Navbar = ({ session }: { session: Session | null }) => {
+interface NavbarProps {
+  session: Session | null // Current user session from NextAuth
+}
+
+/**
+ * Navigation bar component with authentication controls
+ * @param session - Current user session state
+ * @returns JSX element for the navigation interface
+ */
+const Navbar = ({ session }: NavbarProps) => {
   return (
     <nav className="bg-white shadow-md py-4 border-b border-gray-200">
       <div className="container mx-auto flex justify-between items-center px-6 lg:px-8">
+        {/* Application logo and home link */}
         <Link href="/" className="flex items-center ">
           <span className="text-2xl font-bold text-gray-800">Logo</span>
         </Link>
+
+        {/* Navigation controls and authentication */}
         <div className="flex items-center space-x-4">
           {session ? (
+            // Authenticated user interface
             <>
-              <Link href="/" className="text-slate-900 hover:text-sky-500">
-                <FiSidebar className="text-2xl" />
+              {/* Link to user's chat history */}
+              <Link href="/chats" className="text-slate-900 hover:text-sky-500">
+                Chats
               </Link>
 
+              {/* Sign out button */}
               <button
-                className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white  p-2 rounded-sm cursor-pointerf"
+                className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-sm cursor-pointer"
                 onClick={logout}
               >
                 Sign Out
               </button>
             </>
           ) : (
+            // Unauthenticated user interface
             <>
-              <Link href="/" className="text-slate-900 hover:text-sky-500">
-                <FiSidebar className="text-2xl" />
-              </Link>
+              {/* Sign in button with GitHub icon */}
               <button
-                className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white  p-2 rounded-sm cursor-pointerf"
+                className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-sm cursor-pointer"
                 onClick={login}
               >
                 Sign In
+                {/* GitHub logo SVG icon */}
                 <svg
                   className="w-6 h-6 ml-2"
                   xmlns="http://www.w3.org/2000/svg"
