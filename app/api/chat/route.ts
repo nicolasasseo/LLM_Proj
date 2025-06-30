@@ -23,7 +23,6 @@
  */
 
 import { NextResponse } from "next/server"
-import { generateChatTitle } from "@/lib/generate-title"
 
 /**
  * POST handler for chat API endpoint
