@@ -36,6 +36,7 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import ChatForm from "@/components/ChatForm"
+import DeleteChatButton from "@/components/DeleteChatButton"
 
 interface ChatPageProps {
   params: { id: string } // Chat ID from URL parameter
@@ -71,8 +72,10 @@ export default async function ChatPage({ params }: ChatPageProps) {
   return (
     <div className="p-6">
       {/* Chat title header */}
-      <h1 className="text-xl font-bold mb-4">{chat.title}</h1>
-
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold mb-4">{chat.title}</h1>
+        <DeleteChatButton chatId={chat.id} />
+      </div>
       {/* Message history container */}
       <div className="space-y-4">
         {chat.messages.map((msg) => (

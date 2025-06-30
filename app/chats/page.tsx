@@ -53,7 +53,18 @@ export default async function ChatsPage() {
       {/* Conditional rendering based on chat availability */}
       {chats.length === 0 ? (
         // Empty state when user has no chats
-        <p>No chats yet.</p>
+        <div className="flex flex-col items-center justify-center h-full gap-4">
+          <h2 className="text-2xl font-bold">No chats yet.</h2>
+          <p className="text-gray-500">
+            Start a new chat by clicking the button below.
+          </p>
+          <Link
+            href="/"
+            className="text-blue-500 border-2 p-4 rounded hover:bg-blue-500 hover:text-white transition-colors duration-300"
+          >
+            New Chat
+          </Link>
+        </div>
       ) : (
         // List of chat sessions with navigation links
         <ul className="space-y-2">

@@ -25,7 +25,10 @@ export async function DELETE(
     }
 
     await prisma.chatSession.delete({ where: { id } })
-    return new NextResponse(null, { status: 204 })
+    return NextResponse.json(
+      { message: "Chat deleted successfully" },
+      { status: 200 }
+    )
   } catch (err) {
     console.error("Delete chat error:", err)
     return NextResponse.json(
