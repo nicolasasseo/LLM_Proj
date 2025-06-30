@@ -20,7 +20,7 @@ import { generateChatTitle } from "../generate-title"
  * - Handles errors and invalid states gracefully
  *
  * Usage:
- * - Used as a server action, typically triggered by a form submission
+ * - Used as a server action, triggered by a form submission
  * - Expects a FormData object with 'message' and 'chatId' fields
  * - Throws errors for unauthenticated users or invalid input
  */
