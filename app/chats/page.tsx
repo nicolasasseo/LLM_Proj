@@ -26,6 +26,7 @@
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import DeleteChatButton from "@/components/DeleteChatButton"
 
 /**
  * Chats listing page component
@@ -57,13 +58,22 @@ export default async function ChatsPage() {
         // List of chat sessions with navigation links
         <ul className="space-y-2">
           {chats.map((chat) => (
-            <li key={chat.id}>
+            <li
+              key={chat.id}
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border border-zinc-700 rounded-md px-4 py-3 bg-gray-800 hover:ring-2 hover:ring-blue-700 transition-all duration-300"
+            >
+              {/* Chat title link (flex-grow on desktop) */}
               <Link
                 href={`/chats/${chat.id}`}
-                className="block p-3 border rounded hover:bg-gray-100"
+                className="text-white text-lg truncate sm:flex-grow"
               >
                 {chat.title}
               </Link>
+
+              {/* Delete button (aligns right on desktop) */}
+              <div className="sm:ml-4 sm:flex-shrink-0">
+                <DeleteChatButton chatId={chat.id} />
+              </div>
             </li>
           ))}
         </ul>
