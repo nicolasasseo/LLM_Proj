@@ -35,6 +35,7 @@ export async function sendMessage(formData: FormData) {
   // Extract message content and chat session ID from form data
   const content = formData.get("message") as string
   let chatId = formData.get("chatId") as string
+  let model = formData.get("model") as string
   if (!chatId) throw new Error("No chatId provided")
 
   // Check if a chat session with this ID already exists
@@ -63,7 +64,7 @@ export async function sendMessage(formData: FormData) {
   // Call the LLM backend API to generate an AI response
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/chat`, {
     method: "POST",
-    body: JSON.stringify({ prompt: content }),
+    body: JSON.stringify({ prompt: content, model }),
     headers: { "Content-Type": "application/json" },
   })
   if (!res.ok) {

@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     // Parse request body to extract user prompt
     const body = await req.json()
     const prompt = body.prompt
-
+    const model = body.model
     // Validate that prompt is provided
     if (!prompt) {
       return NextResponse.json({ error: "Missing prompt" }, { status: 400 })
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "gemma:2b-instruct", // Use Gemma 2B Instruct model
+        model, // Use Gemma 2B Instruct model
         prompt, // User's input message
         stream: false, // Disable streaming for easier JSON parsing
       }),

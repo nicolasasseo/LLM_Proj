@@ -3,6 +3,7 @@
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import SendChatButton from "./SendChatButton"
+import ModelsOptions from "./ModelsOptions"
 
 /**
  * Chat Input Component
@@ -59,7 +60,7 @@ export default function ChatInput({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-3/5 mx-auto">
+    <form onSubmit={handleSubmit} className="w-4/5 mx-auto">
       <div className="flex items-end bg-zinc-800 rounded-2xl px-6 py-4 min-h-[64px] max-h-[200px] overflow-y-auto">
         <textarea
           ref={textareaRef}
@@ -76,6 +77,7 @@ export default function ChatInput({
             }
           }}
         />
+        <ModelsOptions />
         <SendChatButton disabled={!message.trim()} loading={loading} />
       </div>
       {/* Hidden input to persist chatId in the form if it exists */}

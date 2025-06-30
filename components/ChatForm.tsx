@@ -38,6 +38,7 @@ import { useRef, useState } from "react"
 import { sendMessage } from "@/lib/actions/send-message"
 import { useRouter } from "next/navigation"
 import SendChatButton from "./SendChatButton"
+import ModelsOptions from "./ModelsOptions"
 
 interface ChatFormProps {
   chatId: string // ID of the current chat session
@@ -63,6 +64,7 @@ export default function ChatForm({ chatId }: ChatFormProps) {
     setLoading(true)
     const formData = new FormData(e.currentTarget)
     formData.set("chatId", chatId)
+
     await sendMessage(formData)
     if (textareaRef.current) textareaRef.current.value = ""
     setMessage("")
@@ -90,6 +92,8 @@ export default function ChatForm({ chatId }: ChatFormProps) {
             }
           }}
         />
+
+        <ModelsOptions />
 
         {/* Send button with disabled state */}
         <SendChatButton

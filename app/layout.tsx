@@ -53,7 +53,6 @@ export default async function RootLayout({
 }>) {
   // Get current authentication session for the user
   const session = await auth()
-  console.log(session)
 
   return (
     <html lang="en">
