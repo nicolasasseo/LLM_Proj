@@ -7,9 +7,10 @@
  *
  * Features:
  * - Message input
- * - Form submission with server actions
+ * - Form submission with onSubmit and handleSubmit for async actions
  * - Automatic page refresh after message submission
  * - Disabled state for empty messages
+ * - Loading spinner and disabled state for send button while processing
  * - Consistent styling with landing chat component
  * - Real-time input validation
  *
@@ -17,11 +18,12 @@
  * - Controls message input state
  * - Manages form submission and page refresh
  * - Handles textarea clearing after submission
+ * - Manages loading state for send button
  *
  * User Experience:
  * - Seamless continuation of conversations
  * - Immediate feedback with page refresh
- * - Visual feedback for button states
+ * - Visual feedback for button and loading states
  * - Responsive design with proper accessibility
  *
  * Usage:
@@ -35,6 +37,7 @@
 import { useRef, useState } from "react"
 import { sendMessage } from "@/lib/actions/send-message"
 import { useRouter } from "next/navigation"
+import SendChatButton from "./SendChatButton"
 
 interface ChatFormProps {
   chatId: string // ID of the current chat session
@@ -52,25 +55,23 @@ export default function ChatForm({ chatId }: ChatFormProps) {
   const [message, setMessage] = useState("")
   // Router for page refresh after submission
   const router = useRouter()
+  // Loading state for send button
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
+    const formData = new FormData(e.currentTarget)
+    formData.set("chatId", chatId)
+    await sendMessage(formData)
+    if (textareaRef.current) textareaRef.current.value = ""
+    setMessage("")
+    router.refresh()
+    setLoading(false)
+  }
 
   return (
-    <form
-      action={async (formData) => {
-        // Set chat ID in form data for server action
-        formData.set("chatId", chatId)
-
-        // Submit message to server
-        await sendMessage(formData)
-
-        // Clear input after submission
-        if (textareaRef.current) textareaRef.current.value = ""
-        setMessage("")
-
-        // Refresh the page to show the new message
-        router.refresh()
-      }}
-      className="w-full max-w-4xl mx-auto mt-6"
-    >
+    <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto mt-6">
       {/* Chat input container with dark theme */}
       <div className="flex items-end bg-zinc-800 rounded-2xl px-6 py-4 min-h-[64px] max-h-[200px] overflow-y-auto">
         {/* Auto-resizing textarea for message input */}
@@ -86,28 +87,11 @@ export default function ChatForm({ chatId }: ChatFormProps) {
         />
 
         {/* Send button with disabled state */}
-        <button
-          type="submit"
-          disabled={!message.trim()} // Disable when message is empty
-          className="ml-4 bg-white text-zinc-900 rounded-full w-10 h-10 flex items-center justify-center shadow transition hover:bg-zinc-200 disabled:bg-zinc-600 disabled:text-zinc-400 disabled:cursor-not-allowed"
-          aria-label="Send"
-        >
-          {/* Send icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 12h14M12 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+        <SendChatButton
+          disabled={!message.trim()}
+          ariaLabel="Send"
+          loading={loading}
+        />
       </div>
 
       {/* Hidden input for chat ID */}

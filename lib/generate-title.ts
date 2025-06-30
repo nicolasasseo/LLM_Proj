@@ -31,7 +31,7 @@
  */
 export async function generateChatTitle(message: string) {
   // Create prompt for title generation with specific constraints
-  const prompt = `Generate a short and descriptive title (max 8 words) for the following conversation:\n\n${message}`
+  const prompt = `Generate a short and descriptive title (max 8 words) for the following conversation:\n\n${message}. Just return the title, no other text.`
 
   // Send request to local Ollama server for title generation
   const res = await fetch("http://localhost:11434/api/generate", {

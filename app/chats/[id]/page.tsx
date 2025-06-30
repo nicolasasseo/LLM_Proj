@@ -6,7 +6,7 @@
  * continuing the conversation.
  *
  * Features:
- * - Dynamic routing based on chat ID parameter
+ * - Dynamic routing based on chat ID parameter (params must be awaited in Next.js dynamic routes)
  * - Authentication and authorization checks
  * - Complete message history display
  * - Real-time chat form for new messages
@@ -26,6 +26,10 @@
  * - Accessible at /chats/[id] route
  * - Displays conversation history and allows new messages
  * - Integrates with ChatForm component for message input
+ *
+ * Note:
+ *   In Next.js app directory, dynamic route params must be awaited before use.
+ *   See: https://nextjs.org/docs/messages/sync-dynamic-apis
  */
 
 import { auth } from "@/auth"
@@ -39,19 +43,20 @@ interface ChatPageProps {
 
 /**
  * Individual chat page component
- * @param params - Object containing the chat ID from the URL
+ * @param params - Object containing the chat ID from the URL (must be awaited in dynamic routes)
  * @returns JSX element displaying chat conversation or error state
  */
 export default async function ChatPage({ params }: ChatPageProps) {
   // Get current user session for authentication check
   const sessionUser = await auth()
+  const { id } = await params
 
   // Show authentication prompt if user is not logged in
   if (!sessionUser?.user) return <p>Not logged in</p>
 
   // Fetch chat session with all related messages and user information
   const chat = await prisma.chatSession.findUnique({
-    where: { id: params.id }, // Find chat by ID from URL
+    where: { id }, // Find chat by ID from URL
     include: {
       messages: {
         orderBy: { createdAt: "asc" }, // Messages in chronological order
@@ -92,7 +97,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
       </div>
 
       {/* Chat form for new messages */}
-      <ChatForm chatId={params.id} />
+      <ChatForm chatId={id} />
     </div>
   )
 }
