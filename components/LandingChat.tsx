@@ -62,14 +62,19 @@ export default function ChatInput({
     <form onSubmit={handleSubmit} className="w-3/5 mx-auto">
       <div className="flex items-end bg-zinc-800 rounded-2xl px-6 py-4 min-h-[64px] max-h-[200px] overflow-y-auto">
         <textarea
-          ref={textareaRef} // Attach ref for direct DOM access
+          ref={textareaRef}
           name="message"
-          placeholder="Enter your message..."
-          className="flex-1 bg-transparent text-white border-none outline-none resize-none placeholder:text-zinc-400 text-lg"
+          placeholder="Enter your message here..."
+          className="flex-1 bg-transparent text-white border-none outline-none resize-none placeholder:text-zinc-400 text-lg max-h-[160px] scrollbar-none"
           rows={1}
-          style={{ minHeight: 32, maxHeight: 120 }}
           value={message}
-          onChange={(e) => setMessage(e.target.value)} // Update message state on input
+          onChange={(e) => {
+            setMessage(e.target.value)
+            if (textareaRef.current) {
+              textareaRef.current.style.height = "auto"
+              textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+            }
+          }}
         />
         <SendChatButton disabled={!message.trim()} loading={loading} />
       </div>

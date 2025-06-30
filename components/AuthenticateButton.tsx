@@ -2,12 +2,14 @@
 
 import React, { useState } from "react"
 import { login, logout } from "../lib/auth-actions"
+import Image from "next/image"
 
 interface AuthenticateButtonProps {
   loggedIn: boolean
+  image: string | null | undefined
 }
 
-const AuthenticateButton = ({ loggedIn }: AuthenticateButtonProps) => {
+const AuthenticateButton = ({ loggedIn, image }: AuthenticateButtonProps) => {
   const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
@@ -27,7 +29,22 @@ const AuthenticateButton = ({ loggedIn }: AuthenticateButtonProps) => {
         onClick={handleClick}
         disabled={loading}
       >
-        {loading ? "Signing out..." : "Sign Out"}
+        {loading ? (
+          "Signing out..."
+        ) : (
+          <>
+            Sign Out
+            {image && (
+              <Image
+                src={image}
+                alt="GitHub"
+                width={24}
+                height={24}
+                className="ml-2 rounded-full"
+              />
+            )}
+          </>
+        )}
       </button>
     )
   }

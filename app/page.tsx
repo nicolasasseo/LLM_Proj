@@ -57,7 +57,7 @@ export default async function Home() {
         </h1>
       </div>
       {/* Chat interface container */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center overflow-none">
         <LandingChat action={sendMessage} />
       </div>
     </div>

@@ -55,13 +55,13 @@ const Navbar = ({ session }: NavbarProps) => {
                 Chats
               </Link>
               {/* Sign out button via AuthenticateButton */}
-              <AuthenticateButton loggedIn={true} />
+              <AuthenticateButton loggedIn={true} image={session.user?.image} />
             </>
           ) : (
             // Unauthenticated user interface
             <>
               {/* Sign in button via AuthenticateButton */}
-              <AuthenticateButton loggedIn={false} />
+              <AuthenticateButton loggedIn={false} image={null} />
             </>
           )}
         </div>

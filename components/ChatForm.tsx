@@ -79,11 +79,16 @@ export default function ChatForm({ chatId }: ChatFormProps) {
           ref={textareaRef}
           name="message"
           placeholder="Continue the conversation..."
-          className="flex-1 bg-transparent text-white border-none outline-none resize-none placeholder:text-zinc-400 text-lg"
+          className="flex-1 bg-transparent text-white border-none outline-none resize-none placeholder:text-zinc-400 text-lg max-h-[160px] scrollbar-hide"
           rows={1}
-          style={{ minHeight: 32, maxHeight: 120 }}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+            setMessage(e.target.value)
+            if (textareaRef.current) {
+              textareaRef.current.style.height = "auto"
+              textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+            }
+          }}
         />
 
         {/* Send button with disabled state */}
